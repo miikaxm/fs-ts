@@ -39,7 +39,7 @@ interface Summary {
 }
 
 // Main logic
-const calculateExercises = (hours: Array<number>, dailyGoal: number): Summary => {
+export const calculateExercises = (hours: Array<number>, dailyGoal: number): Summary => {
   const periodLength = hours.length;
   const trainingDays = hours.filter(h => h > 0).length;
 
