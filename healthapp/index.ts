@@ -9,7 +9,7 @@ app.get('/bmi', (req, res) => {
   const weight = Number(req.query.weight);
 
   if (!req.query.height || !req.query.weight || isNaN(height) || isNaN(weight)) {
-    return res.status(400).json({ error: 'malformatted parameters ' });
+    return res.status(400).json({ error: 'malformatted parameters' });
   }
 
   const bmi = calculateBmi(height, weight);
@@ -19,6 +19,10 @@ app.get('/bmi', (req, res) => {
     height,
     bmi
   });
+});
+
+app.get('/hello', (_req, res) => {
+  res.send('Hello Full Stack!');
 });
 
 app.post('/exercises', (req, res) => {
@@ -41,8 +45,7 @@ app.post('/exercises', (req, res) => {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  const result = calculateExercises(daily_exercises, Number(target));
-  return res.send({ result });
+  return res.send(calculateExercises(daily_exercises, Number(target)));
 });
 
 const PORT = 3000;
