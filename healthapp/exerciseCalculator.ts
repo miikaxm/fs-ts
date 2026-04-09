@@ -9,7 +9,7 @@ const parseArgs = (args: string[]): exerciseValues => {
   if (args.length < 4) throw new Error('Not enough arguments');
   if (args.length > 12) throw new Error('Too many arguments');
 
-  if (isNaN(Number(args[2]))) throw new Error('Target value must be number')
+  if (isNaN(Number(args[2]))) throw new Error('Target value must be number');
   const target = Number(args[2]);
 
   const exerciseHours = args
@@ -72,15 +72,15 @@ const calculateExercises = (hours: Array<number>, dailyGoal: number): Summary =>
     target: dailyGoal,
     average
   };
-}
+};
 
 try {
-  const { target, exerciseHours } = parseArgs(process.argv)
-  console.log(calculateExercises(exerciseHours, target))
+  const { target, exerciseHours } = parseArgs(process.argv);
+  console.log(calculateExercises(exerciseHours, target));
 } catch (error: unknown) {
-  let errorMessage = 'Something bad happened.'
+  let errorMessage = 'Something bad happened.';
   if (error instanceof Error) {
     errorMessage += ' Error: ' + error.message;
   }
-  console.log(errorMessage)
+  console.log(errorMessage);
 }
