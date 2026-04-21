@@ -1,11 +1,13 @@
 import express from 'express';
 import diagnosesRouter from '../backend/src/routes/diagnoses.ts';
+import patientsRouter from '../backend/src/routes/patients.ts';
 
 const app = express();
 
 app.use(express.json());
 
 app.use('/api/diagnoses', diagnosesRouter);
+app.use('/api/patients', patientsRouter);
 
 const PORT = 3001;
 
