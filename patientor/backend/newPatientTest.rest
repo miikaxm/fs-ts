@@ -1,0 +1,10 @@
+POST localhost:3001/api/patients
+Content-Type: application/json
+
+{
+  "name": "Miika Valkonen",
+  "dateOfBirth": "2003-03-29",
+  "ssn": "300179-88B",
+  "gender": "male",
+  "occupation": "Software Engineer"
+}
