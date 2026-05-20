@@ -9,8 +9,15 @@ const App = () => {
   const [newVisibility, setNewVisibility] = useState('')
   const [newComment, setNewComment] = useState('')
 
+  // Error message
+  const [error, setError] = useState('')
+
   const diaryCreation = (event: React.SyntheticEvent) => {
     event.preventDefault()
+
+    if (newComment === '') {
+      setNewComment('No comments given')
+    }
 
     const newDiary: NewDiary = {
       date: newDate,
@@ -19,14 +26,28 @@ const App = () => {
       comment: newComment
     }
   
-    diaryService.create(newDiary).then(r => {
-      setDiaries(diaries.concat(r))
-    })
+    diaryService
+      .create(newDiary)
+      .then(r => {
+        setDiaries(diaries.concat(r))
+        setError('')
 
-    setNewComment('')
-    setNewVisibility('')
-    setNewWeather('')
-    setNewDate('')
+        setNewComment('')
+        setNewVisibility('')
+        setNewWeather('')
+        setNewDate('')
+      })
+      .catch(error => {
+        console.log(error.response.data.error)
+        const field = error.response.data.error[0].path[0]
+        let userInput = ''
+
+        if (field === 'weather') userInput = newWeather
+        if (field === 'visibility') userInput = newVisibility
+        if (field === 'date') userInput = newDate
+
+        setError(`Incorrect ${field}: ${userInput}`)
+      })
   }
   
   useEffect(() => {
@@ -38,6 +59,7 @@ const App = () => {
   return (
     <div>
       <h1>Add new diary</h1>
+      <p id="error" style={{ color: 'red' }}>{error}</p>
       <form onSubmit={diaryCreation}>
         {/* Date select */}
         <label htmlFor="date">Date:</label><br />
