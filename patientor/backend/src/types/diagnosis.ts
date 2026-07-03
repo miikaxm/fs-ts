@@ -21,16 +21,20 @@ export interface Diagnosis {
   latin?: string;
 }
 
+export interface Entry { 
+}
+
 export interface Patient {
   id: string;
   name: string;
-  dateOfBirth: string;
   ssn: string;
-  gender: Gender;
   occupation: string;
+  gender: Gender;
+  dateOfBirth: string;
+  entries: Entry[]
 }
 
-export type NonSensitivePatients = Omit<Patient, 'ssn'>;
+export type NonSensitivePatients = Omit<Patient, 'ssn' | 'entries'>;
 
 export type NewPatientEntry = z.infer<typeof newEntrySchema>;
 
@@ -39,3 +43,4 @@ export interface PatientEntry extends NewPatientEntry {
 }
 
 export type Gender = typeof Gender[keyof typeof Gender];
+
