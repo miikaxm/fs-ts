@@ -29,8 +29,8 @@ router.get('/', (_req, res: Response<NonSensitivePatients[]>) => {
 router.get('/:id', (req: Request<{ id: string }> , res: Response<Patient>) => {
   console.log('Patients router loaded');
   const patient = patientsService.getPatientById(req.params.id);
-  res.send(patient)
-})
+  res.send(patient);
+});
 
 router.post('/', newPatientParser, (req: Request<unknown, unknown, NewPatientEntry>, res: Response<PatientEntry>) => {
   const addedEntry = patientsService.addPatient(req.body);

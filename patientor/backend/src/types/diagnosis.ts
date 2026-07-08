@@ -62,7 +62,7 @@ const HealthCheckRating = {
   CriticalRisk: 3,
 } as const;
 
-type HealthCheckRating = typeof HealthCheckRating[keyof typeof HealthCheckRating]
+type HealthCheckRating = typeof HealthCheckRating[keyof typeof HealthCheckRating];
 
 interface HealthCheckEntry extends BaseEntry {
   type: "HealthCheck";
