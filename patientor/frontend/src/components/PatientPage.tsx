@@ -4,7 +4,6 @@ import patientService from "../services/patients";
 import { Patient } from "../types";
 import { Typography } from "@mui/material";
 import MaleIcon from '@mui/icons-material/Male';
-import { Male } from "@mui/icons-material";
 import FemaleIcon from '@mui/icons-material/Female';
 import TransgenderIcon from '@mui/icons-material/Transgender';
 
