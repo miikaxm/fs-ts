@@ -70,7 +70,8 @@ const PatientPage = () => {
             <Typography variant="h5">{patient.name} <FemaleIcon></FemaleIcon></Typography>
             <Typography variant="subtitle1">ssn: {patient.ssn}</Typography>
             <Typography variant="subtitle1">Occupation: {patient.occupation}</Typography>
-            <Typography variant="subtitle1">date of birth: {patient.dateOfBirth}</Typography>
+            <Typography variant="subtitle1">date of birth: {patient.dateOfBirth}</Typography><br />
+            <Typography variant="h5">Entries</Typography>
 
             {/* List all entries and codes of patient */}
             {patient.entries.length > 0 && (
@@ -100,8 +101,8 @@ const PatientPage = () => {
             <Typography variant="h5">{patient.name} <TransgenderIcon></TransgenderIcon></Typography>
             <Typography variant="subtitle1">ssn: {patient.ssn}</Typography>
             <Typography variant="subtitle1">Occupation: {patient.occupation}</Typography>
-            <Typography variant="subtitle1">date of birth: {patient.dateOfBirth}</Typography>
-
+            <Typography variant="subtitle1">date of birth: {patient.dateOfBirth}</Typography><br />
+            <Typography variant="h5">Entries</Typography>
 
             {/* List all entries and codes of patient */}
             {patient.entries.length > 0 && (
