@@ -27,28 +27,75 @@ const PatientPage = () => {
   if (patient.gender == "male") {
     return (
         <div>
+            {/* List patiens basic data */}
             <Typography variant="h5">{patient.name} <MaleIcon></MaleIcon></Typography>
             <Typography variant="subtitle1">ssn: {patient.ssn}</Typography>
             <Typography variant="subtitle1">Occupation: {patient.occupation}</Typography>
-            <Typography variant="subtitle1">date of birth: {patient.dateOfBirth}</Typography>
+            <Typography variant="subtitle1">date of birth: {patient.dateOfBirth}</Typography><br />
+            <Typography variant="h5">Entries</Typography>
+
+            {/* List all entries and codes of patient */}
+            {patient.entries.length > 0 && (
+              patient.entries.map(entry => (
+                <div key={entry.id}>
+                  <p>{entry.date} {entry.description}</p>
+                  <ul>
+                    {entry.diagnosisCodes?.map(code => (
+                      <li key={code}>{code}</li>
+                    ))}
+                  </ul>
+                </div>
+              ))
+            )}
         </div>
     );
   } if (patient.gender == "female") {
     return (
         <div>
+            {/* List patiens basic data */}
             <Typography variant="h5">{patient.name} <FemaleIcon></FemaleIcon></Typography>
             <Typography variant="subtitle1">ssn: {patient.ssn}</Typography>
             <Typography variant="subtitle1">Occupation: {patient.occupation}</Typography>
             <Typography variant="subtitle1">date of birth: {patient.dateOfBirth}</Typography>
+
+            {/* List all entries and codes of patient */}
+            {patient.entries.length > 0 && (
+              patient.entries.map(entry => (
+                <div key={entry.id}>
+                  <p>{entry.date} {entry.description}</p>
+                  <ul>
+                    {entry.diagnosisCodes?.map(code => (
+                      <li key={code}>{code}</li>
+                    ))}
+                  </ul>
+                </div>
+              ))
+            )}
         </div>
     );
   } else {
     return (
         <div>
+            {/* List patiens basic data */}
             <Typography variant="h5">{patient.name} <TransgenderIcon></TransgenderIcon></Typography>
             <Typography variant="subtitle1">ssn: {patient.ssn}</Typography>
             <Typography variant="subtitle1">Occupation: {patient.occupation}</Typography>
             <Typography variant="subtitle1">date of birth: {patient.dateOfBirth}</Typography>
+
+
+            {/* List all entries and codes of patient */}
+            {patient.entries.length > 0 && (
+              patient.entries.map(entry => (
+                <div key={entry.id}>
+                  <p>{entry.date} {entry.description}</p>
+                  <ul>
+                    {entry.diagnosisCodes?.map(code => (
+                      <li key={code}>{code}</li>
+                    ))}
+                  </ul>
+                </div>
+              ))
+            )}
         </div>
     );
   }
