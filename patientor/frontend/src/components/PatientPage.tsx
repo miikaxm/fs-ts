@@ -1,16 +1,24 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import patientService from "../services/patients";
-import { Patient } from "../types";
+import { Diagnosis, Patient } from "../types";
 import { Typography } from "@mui/material";
 import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
 import TransgenderIcon from '@mui/icons-material/Transgender';
+import diagnosesService from "../services/diagnoses";
 
 
 const PatientPage = () => {
   const { id } = useParams();
   const [patient, setPatient] = useState<Patient | null>(null);
+  const [diagnoses, setDiagnoses] = useState<Diagnosis[]>([]);
+
+  const fetchDiagnosisList = async () => {
+      const diagnoses = await diagnosesService.getAll();
+      setDiagnoses(diagnoses);
+    }
+  void fetchDiagnosisList();
 
   useEffect(() => {
     if (id) {
@@ -40,9 +48,15 @@ const PatientPage = () => {
                 <div key={entry.id}>
                   <p>{entry.date} {entry.description}</p>
                   <ul>
-                    {entry.diagnosisCodes?.map(code => (
-                      <li key={code}>{code}</li>
-                    ))}
+                    {entry.diagnosisCodes?.map(code => {
+                      const diagnosis = diagnoses.find(d => d.code === code);
+
+                      return (
+                        <li key={code}>{code}
+                          {code} {diagnosis?.name}
+                        </li>
+                      );
+                    })}
                   </ul>
                 </div>
               ))
@@ -64,9 +78,15 @@ const PatientPage = () => {
                 <div key={entry.id}>
                   <p>{entry.date} {entry.description}</p>
                   <ul>
-                    {entry.diagnosisCodes?.map(code => (
-                      <li key={code}>{code}</li>
-                    ))}
+                    {entry.diagnosisCodes?.map(code => {
+                      const diagnosis = diagnoses.find(d => d.code === code);
+
+                      return (
+                        <li key={code}>{code}
+                          {code} {diagnosis?.name}
+                        </li>
+                      );
+                    })}
                   </ul>
                 </div>
               ))
@@ -89,9 +109,15 @@ const PatientPage = () => {
                 <div key={entry.id}>
                   <p>{entry.date} {entry.description}</p>
                   <ul>
-                    {entry.diagnosisCodes?.map(code => (
-                      <li key={code}>{code}</li>
-                    ))}
+                    {entry.diagnosisCodes?.map(code => {
+                      const diagnosis = diagnoses.find(d => d.code === code);
+
+                      return (
+                        <li key={code}>{code}
+                          {code} {diagnosis?.name}
+                        </li>
+                      );
+                    })}
                   </ul>
                 </div>
               ))
