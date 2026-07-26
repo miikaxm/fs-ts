@@ -1,4 +1,4 @@
-import type { Patient } from '../types/diagnosis.ts';
+import type { Patient } from '../types/types.ts';
 
 const patients: Patient[] = [
   {

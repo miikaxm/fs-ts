@@ -1,0 +1,35 @@
+POST http://localhost:3001/api/patients/d27736ec-f723-11e9-8f0b-362b9e155667/entries
+Content-Type: application/json
+
+# {
+#   "date": "2026-07-26",
+#   "type": "Hospital",
+#   "specialist": "Dr. Smith",
+#   "diagnosisCodes": ["S93.4"],
+#   "description": "Patient admitted after ankle sprain; treated and discharged.",
+#   "discharge": {
+#     "date": "2026-07-03",
+#     "criteria": "Healed and able to walk with crutches"
+#   }
+# }
+
+# {
+#   "date": "2026-07-26",
+#   "type": "OccupationalHealthcare",
+#   "specialist": "MD House",
+#   "employerName": "FBI",
+#   "diagnosisCodes": ["S93.4"],
+#   "description": "Patient admitted after ankle sprain; treated and discharged.",
+#   "sickLeave": {
+#     "startDate": "2019-08-05",
+#     "endDate": "2019-08-28"
+#   }
+# }
+
+{
+  "date": "2026-07-26",
+  "type": "HealthCheck",
+  "specialist": "MD House",
+  "description": "Yearly control visit. Cholesterol levels back to normal.",
+  "healthCheckRating": 0
+}
