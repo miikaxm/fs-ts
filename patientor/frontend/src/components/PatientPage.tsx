@@ -8,12 +8,16 @@ import FemaleIcon from '@mui/icons-material/Female';
 import TransgenderIcon from '@mui/icons-material/Transgender';
 import diagnosesService from "../services/diagnoses";
 import EntryDetails from "./EntryDetails";
+import AddEntryForm from "./AddPatientEntryModal/AddPatientEntryForm";
+import { HealthCheckEntry } from "../types";
+import axios from "axios";
 
 
 const PatientPage = () => {
   const { id } = useParams();
   const [patient, setPatient] = useState<Patient | null>(null);
   const [diagnoses, setDiagnoses] = useState<Diagnosis[]>([]);
+  const [error, setError] = useState("");
 
   // Get all diagnoses from backend
   useEffect(() => {
@@ -33,6 +37,29 @@ const PatientPage = () => {
       });
     }
   }, [id]);
+
+const submitNewEntry = async (
+  values: Omit<HealthCheckEntry, "id">
+) => {
+  if (!patient) return;
+
+  try {
+    const newEntry = await patientService.addEntry(patient.id, values);
+
+    setPatient({
+      ...patient,
+      entries: patient.entries.concat(newEntry)
+    });
+
+    setError("");
+  } catch (e) {
+    if (axios.isAxiosError(e)) {
+      setError(String(e.response?.data));
+    } else {
+      setError("Unknown error");
+    }
+  }
+};
 
   // If patient not found display it
   if (!patient) {
@@ -61,6 +88,8 @@ const PatientPage = () => {
           diagnoses={diagnoses}
         />
       ))}
+      <Typography variant="h5">{error}</Typography>
+      <AddEntryForm onSubmit={submitNewEntry} />
     </>
   );
 }
