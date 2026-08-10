@@ -1,16 +1,5 @@
 import { useState } from "react";
-import {
-  Alert,
-  Box,
-  Button,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Paper,
-  Select,
-  TextField,
-  Typography,
-} from "@mui/material";
+import {Alert, Box, Button, FormControl, InputLabel, MenuItem, Paper, Select, TextField, Typography,} from "@mui/material";
 import { HealthCheckRating } from "../../types";
 
 interface Props {
@@ -25,6 +14,17 @@ const AddEntryForm = ({ onSubmit }: Props) => {
   const [healthCheckRating, setHealthCheckRating] = useState("0");
   const [error, setError] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [entryType, SetEntryType] = useState("");
+
+  // Additional info for other entry types
+
+  const [employerName, setEmployerName] = useState("");
+
+  const [sickLeaveStart, setSickLeaveStart] = useState("");
+  const [sickLeaveEnd, setSickLeaveEnd] = useState("");
+
+  const [dischargeDate, setDischargeDate] = useState("");
+  const [dischargeCriteria, setDischargeCriteria] = useState("");
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,35 +44,84 @@ const AddEntryForm = ({ onSubmit }: Props) => {
       return;
     }
 
-    const rating = Number(healthCheckRating);
-
-    if (isNaN(rating) || rating < 0 || rating > 3) {
-      setError("Health check rating must be between 0 and 3");
-      return;
-    }
-
     setError("");
 
-    onSubmit({
-      type: "HealthCheck",
-      description,
-      date,
-      specialist,
-      diagnosisCodes:
-        diagnosisCodes === ""
-          ? []
-          : diagnosisCodes.split(",").map((c) => c.trim()),
-      healthCheckRating: Number(
-        healthCheckRating
-      ) as HealthCheckRating,
-    });
+    if (entryType === "HealthCheck") {
+      const rating = Number(healthCheckRating);
 
+       if (isNaN(rating) || rating < 0 || rating > 3) {
+        setError("Health check rating must be between 0 and 3");
+        return;
+      }
+    }
+
+    if (entryType === "HealthCheck") {
+      onSubmit({
+        type: "HealthCheck",
+        description,
+        date,
+        specialist,
+        diagnosisCodes:
+          diagnosisCodes === ""
+            ? []
+            : diagnosisCodes.split(",").map((c) => c.trim()),
+        healthCheckRating: Number(
+          healthCheckRating
+        ) as HealthCheckRating,
+      });
+    }
+
+    if (entryType === "OccupationalHealthcare") {
+      onSubmit({
+        type: "OccupationalHealthcare",
+        description,
+        date,
+        specialist,
+        diagnosisCodes:
+          diagnosisCodes === ""
+            ? []
+            : diagnosisCodes.split(",").map((c) => c.trim()),
+        employerName,
+        sickLeave:
+          sickLeaveStart && sickLeaveEnd
+            ? {
+                startDate: sickLeaveStart,
+                endDate: sickLeaveEnd,
+              }
+            : undefined,
+      });
+    }
+
+    if (entryType === "Hospital") {
+      onSubmit({
+        type: "Hospital",
+        description,
+        date,
+        specialist,
+        diagnosisCodes:
+          diagnosisCodes === ""
+            ? []
+            : diagnosisCodes.split(",").map((c) => c.trim()),
+        discharge: {
+          date: dischargeDate,
+          criteria: dischargeCriteria,
+        },
+      });
+    }
+
+    // Clear the form out
     setDescription("");
     setDate("");
     setSpecialist("");
     setDiagnosisCodes("");
     setHealthCheckRating("0");
+    setEmployerName("")
+    setSickLeaveStart("")
+    setSickLeaveEnd("")
+    setDischargeDate("")
+    setDischargeCriteria("")
     setIsOpen(false);
+    SetEntryType("");
   };
 
   return (
@@ -116,6 +165,34 @@ const AddEntryForm = ({ onSubmit }: Props) => {
               gap: 2,
             }}
           >
+            
+            <FormControl fullWidth>
+              <InputLabel id="entry-type-label">
+                Entry type
+              </InputLabel>
+
+              <Select
+                labelId="entry-type-label"
+                value={entryType}
+                label="Entry type"
+                onChange={({ target }) =>
+                  SetEntryType(target.value)
+                }
+              >
+                <MenuItem value="HealthCheck">
+                  Health Check
+                </MenuItem>
+
+                <MenuItem value="OccupationalHealthcare">
+                  Occupational Healthcare
+                </MenuItem>
+
+                <MenuItem value="Hospital">
+                  Hospital
+                </MenuItem>
+              </Select>
+            </FormControl>
+            
             <TextField
               label="Description"
               value={description}
@@ -154,36 +231,111 @@ const AddEntryForm = ({ onSubmit }: Props) => {
               fullWidth
             />
 
-            <FormControl fullWidth>
-              <InputLabel id="health-check-rating-label">
-                Health check rating
-              </InputLabel>
+            {entryType === "HealthCheck" && (
+              <FormControl fullWidth>
+                <InputLabel id="health-check-rating-label">
+                  Health check rating
+                </InputLabel>
 
-              <Select
-                labelId="health-check-rating-label"
-                value={healthCheckRating}
-                label="Health check rating"
-                onChange={({ target }) =>
-                  setHealthCheckRating(target.value)
-                }
-              >
-                <MenuItem value="0">
-                  0 - Healthy
-                </MenuItem>
+                <Select
+                  labelId="health-check-rating-label"
+                  value={healthCheckRating}
+                  label="Health check rating"
+                  onChange={({ target }) =>
+                    setHealthCheckRating(target.value)
+                  }
+                >
+                  <MenuItem value="0">
+                    0 - Healthy
+                  </MenuItem>
 
-                <MenuItem value="1">
-                  1 - Low risk
-                </MenuItem>
+                  <MenuItem value="1">
+                    1 - Low risk
+                  </MenuItem>
 
-                <MenuItem value="2">
-                  2 - Moderate risk
-                </MenuItem>
+                  <MenuItem value="2">
+                    2 - Moderate risk
+                  </MenuItem>
 
-                <MenuItem value="3">
-                  3 - High risk
-                </MenuItem>
-              </Select>
-            </FormControl>
+                  <MenuItem value="3">
+                    3 - High risk
+                  </MenuItem>
+                </Select>
+              </FormControl>
+            )}
+
+            {entryType === "OccupationalHealthcare" && (
+              <>
+                <TextField
+                  label="Employer name"
+                  value={employerName}
+                  onChange={({ target }) =>
+                    setEmployerName(target.value)
+                  }
+                  fullWidth
+                />
+
+                <Typography>
+                  Sick leave
+                </Typography>
+
+                <TextField
+                  label="Start date"
+                  type="date"
+                  value={sickLeaveStart}
+                  onChange={({ target }) =>
+                    setSickLeaveStart(target.value)
+                  }
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  fullWidth
+                />
+
+                <TextField
+                  label="End date"
+                  type="date"
+                  value={sickLeaveEnd}
+                  onChange={({ target }) =>
+                    setSickLeaveEnd(target.value)
+                  }
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  fullWidth
+                />
+              </>
+            )}
+
+            {entryType === "Hospital" && (
+              <>
+                <Typography>
+                  Discharge
+                </Typography>
+
+                <TextField
+                  label="Discharge date"    
+                  type="date"
+                  value={dischargeDate}   
+                  onChange={({ target }) =>
+                    setDischargeDate(target.value)
+                  }
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  fullWidth       
+                />
+
+                <TextField
+                  label="Discharge criteria"
+                  value={dischargeCriteria}
+                  onChange={({ target }) =>
+                    setDischargeCriteria(target.value)
+                  }
+                  fullWidth
+                />
+              </>
+            )}
 
             <Box
               sx={{
