@@ -190,7 +190,7 @@ const AddEntryForm = ({ onSubmit }: Props) => {
           setError("");
         }}
       >
-        {isOpen ? "Close form" : "Add Health Check"}
+        {isOpen ? "Close form" : "Add New Entry"}
       </Button>
 
       {isOpen && (
