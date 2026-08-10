@@ -1,7 +1,6 @@
 import { useState } from "react";
 import {Alert, Box, Button, FormControl, InputLabel, MenuItem, Paper, Select, TextField, Typography,} from "@mui/material";
 import { HealthCheckRating } from "../../types";
-import diagnoses from "../../services/diagnoses";
 
 interface Props {
   onSubmit: (values: any) => void;
