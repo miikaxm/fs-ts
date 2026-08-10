@@ -204,10 +204,14 @@ const AddEntryForm = ({ onSubmit }: Props) => {
 
             <TextField
               label="Date"
+              type="date"
               value={date}
               onChange={({ target }) =>
                 setDate(target.value)
               }
+              InputLabelProps={{
+                shrink: true,
+              }}
               fullWidth
             />
 

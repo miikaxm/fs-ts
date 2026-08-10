@@ -47,7 +47,7 @@ const addEntry = (patientId: string, entry: NewEntry,): Entry | undefined => {
   patient.entries.push(newEntry);
 
   return newEntry;
-}
+};
 
 export default {
   getPatients,

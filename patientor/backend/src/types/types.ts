@@ -89,7 +89,7 @@ const baseEntrySchema = z.object({
   date: z.iso.date(),
   specialist: z.string(),
   diagnosisCodes: z.array(z.string()).optional(),
-})
+});
 
 const hospitalEntrySchema = baseEntrySchema.extend({
   type: z.literal("Hospital"),
