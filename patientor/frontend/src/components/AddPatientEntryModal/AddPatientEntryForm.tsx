@@ -1,6 +1,7 @@
 import { useState } from "react";
 import {Alert, Box, Button, FormControl, InputLabel, MenuItem, Paper, Select, TextField, Typography,} from "@mui/material";
 import { HealthCheckRating } from "../../types";
+import diagnoses from "../../services/diagnoses";
 
 interface Props {
   onSubmit: (values: any) => void;
@@ -10,7 +11,7 @@ const AddEntryForm = ({ onSubmit }: Props) => {
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
   const [specialist, setSpecialist] = useState("");
-  const [diagnosisCodes, setDiagnosisCodes] = useState("");
+  const [diagnosisCodes, setDiagnosisCodes] = useState<string[]>([]);
   const [healthCheckRating, setHealthCheckRating] = useState("0");
   const [error, setError] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -25,6 +26,71 @@ const AddEntryForm = ({ onSubmit }: Props) => {
 
   const [dischargeDate, setDischargeDate] = useState("");
   const [dischargeCriteria, setDischargeCriteria] = useState("");
+
+  const codes = [
+  {
+    code: "M24.2",
+    name: "Disorder of ligament",
+  },
+  {
+    code: "M51.2",
+    name: "Other specified intervertebral disc displacement",
+  },
+  {
+    code: "S03.5",
+    name:
+      "Sprain and strain of joints and ligaments of other and unspecified parts of head",
+  },
+  {
+    code: "J10.1",
+    name:
+      "Influenza with other respiratory manifestations, other influenza virus codeentified",
+  },
+  {
+    code: "J06.9",
+    name: "Acute upper respiratory infection, unspecified",
+  },
+  {
+    code: "Z57.1",
+    name: "Occupational exposure to radiation",
+  },
+  {
+    code: "N30.0",
+    name: "Acute cystitis",
+  },
+  {
+    code: "H54.7",
+    name: "Unspecified visual loss",
+  },
+  {
+    code: "J03.0",
+    name: "Streptococcal tonsillitis",
+  },
+  {
+    code: "L60.1",
+    name: "Onycholysis",
+  },
+  {
+    code: "Z74.3",
+    name: "Need for continuous supervision",
+  },
+  {
+    code: "L20",
+    name: "Atopic dermatitis",
+  },
+  {
+    code: "F43.2",
+    name: "Adjustment disorders",
+  },
+  {
+    code: "S62.5",
+    name: "Fracture of thumb",
+  },
+  {
+    code: "H35.29",
+    name: "Other proliferative retinopathy",
+  },
+];
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -61,10 +127,7 @@ const AddEntryForm = ({ onSubmit }: Props) => {
         description,
         date,
         specialist,
-        diagnosisCodes:
-          diagnosisCodes === ""
-            ? []
-            : diagnosisCodes.split(",").map((c) => c.trim()),
+        diagnosisCodes,
         healthCheckRating: Number(
           healthCheckRating
         ) as HealthCheckRating,
@@ -77,10 +140,7 @@ const AddEntryForm = ({ onSubmit }: Props) => {
         description,
         date,
         specialist,
-        diagnosisCodes:
-          diagnosisCodes === ""
-            ? []
-            : diagnosisCodes.split(",").map((c) => c.trim()),
+        diagnosisCodes,
         employerName,
         sickLeave:
           sickLeaveStart && sickLeaveEnd
@@ -98,10 +158,7 @@ const AddEntryForm = ({ onSubmit }: Props) => {
         description,
         date,
         specialist,
-        diagnosisCodes:
-          diagnosisCodes === ""
-            ? []
-            : diagnosisCodes.split(",").map((c) => c.trim()),
+        diagnosisCodes,
         discharge: {
           date: dischargeDate,
           criteria: dischargeCriteria,
@@ -113,7 +170,7 @@ const AddEntryForm = ({ onSubmit }: Props) => {
     setDescription("");
     setDate("");
     setSpecialist("");
-    setDiagnosisCodes("");
+    setDiagnosisCodes([]);
     setHealthCheckRating("0");
     setEmployerName("")
     setSickLeaveStart("")
@@ -225,15 +282,34 @@ const AddEntryForm = ({ onSubmit }: Props) => {
             />
 
             <TextField
+              select
               label="Diagnosis codes"
-              placeholder="S62.5, Z57.1"
               value={diagnosisCodes}
-              onChange={({ target }) =>
-                setDiagnosisCodes(target.value)
-              }
-              helperText="Separate multiple codes with commas"
+              onChange={(event) => {
+                const value = event.target.value;
+
+                setDiagnosisCodes(
+                  typeof value === "string"
+                    ? value.split(",")
+                    : value
+                );
+              }}
+              SelectProps={{
+                multiple: true,
+                renderValue: (selected) =>
+                  (selected as string[]).join(", "),
+              }}
               fullWidth
-            />
+            >
+              {codes.map((diagnosis) => (
+                <MenuItem
+                  key={diagnosis.code}
+                  value={diagnosis.code}
+                >
+                  {diagnosis.code} - {diagnosis.name}
+                </MenuItem>
+              ))}
+            </TextField>
 
             {entryType === "HealthCheck" && (
               <FormControl fullWidth>
