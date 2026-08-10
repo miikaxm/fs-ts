@@ -14,7 +14,7 @@ const AddEntryForm = ({ onSubmit }: Props) => {
   const [healthCheckRating, setHealthCheckRating] = useState("0");
   const [error, setError] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const [entryType, SetEntryType] = useState("");
+  const [entryType, setEntryType] = useState("HealthCheck");
 
   // Additional info for other entry types
 
@@ -177,7 +177,7 @@ const AddEntryForm = ({ onSubmit }: Props) => {
     setDischargeDate("")
     setDischargeCriteria("")
     setIsOpen(false);
-    SetEntryType("");
+    setEntryType("");
   };
 
   return (
@@ -232,7 +232,7 @@ const AddEntryForm = ({ onSubmit }: Props) => {
                 value={entryType}
                 label="Entry type"
                 onChange={({ target }) =>
-                  SetEntryType(target.value)
+                  setEntryType(target.value)
                 }
               >
                 <MenuItem value="HealthCheck">
